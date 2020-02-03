@@ -117,7 +117,7 @@ void drawMap() {
 
 void undrawMap() {
 	blitRect(
-		g_pBufferManager->pBuffer, 0, MAP_Y_OFFSET,
+		g_pBufferManager->pFront, 0, MAP_Y_OFFSET,
 		MAP_WIDTH * CROSS_X_SHIFT, MAP_HEIGHT * CROSS_Y_SHIFT + CROSS_ODD_Y_SHIFT,
 		0
 	);

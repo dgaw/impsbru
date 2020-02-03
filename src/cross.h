@@ -2,8 +2,8 @@
 #define GUARD_IMPSBRU_CROSS_H
 
 #include <ace/utils/bitmap.h>
-#include <ace/utils/bitmapmask.h>
 
+#include "bitmapmask.h"
 #include "config.h"
 
 extern tBitMap *g_pCrossBitMapAtlas[CROSS_ATLAS_SIZE];

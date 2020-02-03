@@ -5,9 +5,9 @@
 #include <ace/managers/game.h>
 #include <ace/managers/blit.h>
 #include <ace/utils/bitmap.h>
-#include <ace/utils/bitmapmask.h>
 #include <ace/macros.h>
 
+#include "bitmapmask.h"
 #include "game.h"
 #include "cross.h"
 #include "cube.h"
@@ -63,14 +63,14 @@ static BYTE s_pCubeStep[CROSS_SIDE_COUNT][2] = {
 void gsEditorCreate() {
 	logWrite("gsEditorCreate\n");
 
-	g_sGameManager.pStateFirst->pView = g_pView;
+    /* g_sGameManager.pStateFirst->pView = g_pView; */
 
 	createCrossAtlas();
 	createCubeAtlas();
 	createEditorStepAtlas();
 
 	blitRect(
-		g_pBufferManager->pBuffer, 0, 0,
+		g_pBufferManager->pFront, 0, 0,
 		WINDOW_SCREEN_WIDTH, WINDOW_SCREEN_HEIGHT,
 		0
 	);
@@ -115,7 +115,7 @@ void gsEditorDestroy() {
 	logWrite("gsEditorDestroy\n");
 
 	blitRect(
-		g_pBufferManager->pBuffer, 0, 0,
+		g_pBufferManager->pFront, 0, 0,
 		WINDOW_SCREEN_WIDTH, WINDOW_SCREEN_HEIGHT,
 		0
 	);
@@ -322,7 +322,7 @@ void handleEditorStepShareActions() {
 	/* Cancel buttons handling */
 	if (keyUse(KEY_ESCAPE) || keyUse(KEY_BACKSPACE)) {
 		blitRect(
-			g_pBufferManager->pBuffer, 0, 0,
+			g_pBufferManager->pFront, 0, 0,
 			WINDOW_SCREEN_WIDTH, WINDOW_SCREEN_HEIGHT,
 			0
 		);
@@ -601,7 +601,7 @@ void finishMap() {
 
 	blitCopyAligned(
 		s_pEditorStepBitMapAtlas[EDITOR_STEP_SHARE_TEXT], 0, 0,
-		g_pBufferManager->pBuffer, 0, 115,
+		g_pBufferManager->pFront, 0, 115,
 		EDITOR_STEP_WIDTH, 32
 	);
 
@@ -609,7 +609,7 @@ void finishMap() {
 	drawEditorStep();
 }
 
-void redrawCrossDepth(UBYTE ubCrossMapX, UBYTE ubCrossMapY, UBYTE ubCubeCrossSideAdjustRotation, UBYTE ubCubeCrossSideAdjustRotation) {
+void redrawCrossDepth(UBYTE ubCrossMapX, UBYTE ubCrossMapY, UBYTE ubCubeCrossSideAdjustRotation, UBYTE ubCubeCrossSideAdjustRotation2) {
 	UBYTE ubCubeDepth = getCubeDepth(ubCubeCrossSideAdjustRotation, ubCubeCrossSideAdjustRotation);
 
 	UWORD uwCubeStartPointX = getMapCrossX(ubCrossMapX);
@@ -737,7 +737,7 @@ void cacheCubeDepthCrossSide(UBYTE ubCrossXIndex, UBYTE ubCrossYIndex, UBYTE ubC
 void drawEditorStep() {
 	blitCopyAligned(
 		s_pEditorStepBitMapAtlas[s_ubEditorStep], 0, 0,
-		g_pBufferManager->pBuffer, 0, 0,
+		g_pBufferManager->pFront, 0, 0,
 		EDITOR_STEP_WIDTH, EDITOR_STEP_HEIGHT
 	);
 }
@@ -772,7 +772,7 @@ void drawCursor() {
 
 	blitCopyMask(
 		g_pCrossBitMapAtlas[CROSS_CURSOR], ubStartX, ubStartY,
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		ubWidth, ubHeight,
 		g_pCrossBitMapMaskAtlas[CROSS_CURSOR]->pData
 	);
@@ -781,7 +781,7 @@ void drawCursor() {
 void undrawCursor() {
 	blitCopyMask(
 		g_pCrossBitMapAtlas[CROSS_CLEANUP], 0, 0,
-		g_pBufferManager->pBuffer, getMapCrossX(s_ubMapCursorX), getMapCrossY(s_ubMapCursorX, s_ubMapCursorY),
+		g_pBufferManager->pFront, getMapCrossX(s_ubMapCursorX), getMapCrossY(s_ubMapCursorX, s_ubMapCursorY),
 		CROSS_WIDTH, CROSS_HEIGHT,
 		g_pCrossBitMapMaskAtlas[CROSS_CURSOR]->pData
 	);

@@ -2,7 +2,8 @@
 #define GUARD_IMPSBRU_ATLAS_H
 
 #include <ace/utils/bitmap.h>
-#include <ace/utils/bitmapmask.h>
+
+#include "bitmapmask.h"
 
 void createAtlasFile(
 	INOUT tBitMap **pBitMapAtlas,

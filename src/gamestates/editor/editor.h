@@ -2,6 +2,7 @@
 #define GUARD_IMPSBRU_GAMESTATES_EDITOR_H
 
 #include <ace/types.h>
+#include "config.h"
 
 #define EDITOR_STEP_CREATE 0
 #define EDITOR_STEP_START_POINT 1
@@ -67,7 +68,7 @@ void redrawCrossDepth(
 	IN UBYTE ubCrossMapX,
 	IN UBYTE ubCrossMapY,
 	IN UBYTE ubCubeCrossSideAdjustRotation,
-	IN UBYTE ubCubeCrossSideAdjustRotation
+	IN UBYTE ubCubeCrossSideAdjustRotation2
 );
 
 void toggleCrossSideState(

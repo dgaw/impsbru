@@ -1,7 +1,7 @@
 #include "atlas.h"
 
 void createAtlasFile(tBitMap *pBitMapAtlas[], UBYTE ubAtlasIndex, char *szBitMapFilePath) {
-	pBitMapAtlas[ubAtlasIndex] = bitmapCreateFromFile(szBitMapFilePath);
+	pBitMapAtlas[ubAtlasIndex] = bitmapCreateFromFile(szBitMapFilePath, 0);
 }
 
 void destroyAtlasFiles(tBitMap *pBitMapAtlas[], UBYTE ubAtlasCount) {
@@ -12,7 +12,7 @@ void destroyAtlasFiles(tBitMap *pBitMapAtlas[], UBYTE ubAtlasCount) {
 }
 
 void createAtlasFileWithMask(tBitMap *pBitMapAtlas[], tBitmapMask *pBitMapMaskAtlas[], UBYTE ubAtlasIndex, char *szBitMapFilePath, char *szBitMapMaskFilePath) {
-	pBitMapAtlas[ubAtlasIndex] = bitmapCreateFromFile(szBitMapFilePath);
+	pBitMapAtlas[ubAtlasIndex] = bitmapCreateFromFile(szBitMapFilePath, 0);
 	pBitMapMaskAtlas[ubAtlasIndex] = bitmapMaskCreateFromFile(szBitMapMaskFilePath);
 }
 

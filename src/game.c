@@ -9,11 +9,8 @@
 #include <ace/utils/extview.h>
 #include <ace/utils/palette.h>
 
+#include "config.h"
 #include "gamestates/menu/menu.h"
-
-const UWORD WINDOW_SCREEN_WIDTH = 320;
-const UWORD WINDOW_SCREEN_HEIGHT = 256;
-const UWORD WINDOW_SCREEN_BPP = 4;
 
 tView *g_pView;
 tVPort *g_pVPort;
@@ -39,7 +36,11 @@ void genericCreate() {
 
 	paletteLoad("/data/impsbru.plt", g_pVPort->pPalette, 1 << WINDOW_SCREEN_BPP);
 
-	viewLoad(g_pView);
+	viewLoad(g_pView); // FIXME: This breaks in DEBUG but works ok in release
+
+	/* asm("clr.w 0x100"); // To set a breakpoint in FS-UAE: w 1 $100 1 w */
+
+	keyCreate(); // We'll use keyboard
 
 	gamePushState(gsMenuCreate, gsMenuLoop, gsMenuDestroy);
 }
@@ -51,5 +52,6 @@ void genericProcess() {
 }
 
 void genericDestroy() {
+	keyDestroy();
 	viewDestroy(g_pView);
 }

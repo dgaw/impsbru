@@ -1,6 +1,13 @@
 #ifndef GUARD_IMPSBRU_CONFIG_H
 #define GUARD_IMPSBRU_CONFIG_H
 
+#include <ace/types.h>
+#include <ace/utils/custom.h>
+
+extern const UWORD WINDOW_SCREEN_WIDTH;
+extern const UWORD WINDOW_SCREEN_HEIGHT;
+extern const UWORD WINDOW_SCREEN_BPP;
+
 #define CROSS_SIDE_A 0
 #define CROSS_SIDE_B 1
 #define CROSS_SIDE_C 2
@@ -58,5 +65,21 @@
 #define MAP_WIDTH 6
 #define MAP_HEIGHT 4
 #define MAP_Y_OFFSET 17
+
+
+// Some legacy stuff from previous ACE versions.
+// It's here while we are upgrading to the latest version.
+// To be removed eventually.
+
+#define IN    /* Input parameter. Passed pointer contents is const */
+#define OUT   /* Output parameter. Passed pointer contents will be changed. */
+#define INOUT /* Input/output parameter. */
+
+// Originally in ace/utils/custom.h
+extern volatile tRayPos * const vhPosRegs;
+
+// Originally in ace/utils/custom.c
+#define CUSTOM_BASE 0xDFF000
+
 
 #endif

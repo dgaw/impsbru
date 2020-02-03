@@ -12,9 +12,9 @@
 void gsMenuCreate() {
 	logWrite("gsMenuCreate\n");
 
-	g_sGameManager.pStateFirst->pView = g_pView;
+    /* g_sGameManager.pStateFirst->pView = g_pView; */
 
-	bitmapLoadFromFile(g_pBufferManager->pBuffer, "/data/menu_frames/logo.bm", 0, 0);
+	bitmapLoadFromFile(g_pBufferManager->pFront, "/data/menu_frames/logo.bm", 0, 0);
 }
 
 void gsMenuLoop() {
@@ -32,5 +32,5 @@ void gsMenuDestroy() {
 }
 
 void drawLogo() {
-	bitmapLoadFromFile(g_pBufferManager->pBuffer, "/data/menu_frames/logo.bm", 0, 0);
+	bitmapLoadFromFile(g_pBufferManager->pFront, "/data/menu_frames/logo.bm", 0, 0);
 }

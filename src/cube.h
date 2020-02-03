@@ -2,8 +2,8 @@
 #define GUARD_IMPSBRU_CUBE_H
 
 #include <ace/utils/bitmap.h>
-#include <ace/utils/bitmapmask.h>
 
+#include "bitmapmask.h"
 #include "config.h"
 
 extern UBYTE g_pCubeCrossSideAdjust[CROSS_SIDE_COUNT][CROSS_SIDE_COUNT][2];

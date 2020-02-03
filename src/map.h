@@ -20,7 +20,7 @@ UWORD getMapCrossX(
 
 UWORD getMapCrossY(
 	IN UBYTE ubCrossXIndex,
-	IN UBYTE ubCrossXIndex
+	IN UBYTE ubCrossXIndex2
 );
 
 BYTE getMapShiftX(

@@ -1,10 +1,12 @@
 #include "cube.h"
 
 #include <ace/managers/blit.h>
+#include <ace/utils/custom.h>
 
 #include "config.h"
 #include "game.h"
 #include "atlas.h"
+
 
 tBitmapMask *g_pCubeBitMapMaskAtlas[CUBE_ATLAS_SIZE] = {0};
 UBYTE g_pCubeCrossSideAdjust[CROSS_SIDE_COUNT][CROSS_SIDE_COUNT][2] = {
@@ -89,7 +91,7 @@ UBYTE getCubeDepth(UBYTE ubCrossSide, UBYTE ubCrossSideAdjustRotation) {
 
 void drawCube(UWORD uwX, UWORD uwY) {
 	blitCopy(
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		s_pCubeUndrawBitMap, 0, 0,
 		CUBE_WIDTH, CUBE_HEIGHT,
 		MINTERM_COOKIE, 0xFF
@@ -101,7 +103,7 @@ void drawCube(UWORD uwX, UWORD uwY) {
 void undrawCube(UWORD uwX, UWORD uwY) {
 	blitCopyMask(
 		s_pCubeUndrawBitMap, 0, 0,
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		CUBE_WIDTH, CUBE_HEIGHT,
 		g_pCubeBitMapMaskAtlas[0]->pData
 	);
@@ -109,7 +111,7 @@ void undrawCube(UWORD uwX, UWORD uwY) {
 
 void drawCubeWithDepth(UWORD uwX, UWORD uwY) {
 	blitCopy(
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		s_pCubeUndrawBitMap, 0, 0,
 		CUBE_WIDTH, CUBE_HEIGHT,
 		MINTERM_COOKIE, 0xFF
@@ -154,7 +156,7 @@ void drawCubeWithDepth(UWORD uwX, UWORD uwY) {
 
 	blitCopyMask(
 		s_pCubeBitMapAtlas[0], 0, 0,
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		CUBE_WIDTH, CUBE_HEIGHT,
 		(UWORD *) g_pCubeDepthMask->Planes[0]
 	);
@@ -163,7 +165,7 @@ void drawCubeWithDepth(UWORD uwX, UWORD uwY) {
 void drawCubeAtlasIndex(UWORD uwX, UWORD uwY, UBYTE ubAtlasIndex) {
 	blitCopyMask(
 		s_pCubeBitMapAtlas[ubAtlasIndex], 0, 0,
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		CUBE_WIDTH, CUBE_HEIGHT,
 		g_pCubeBitMapMaskAtlas[ubAtlasIndex]->pData
 	);
@@ -195,21 +197,21 @@ void blitCubeWithDepth(
 	wSrcModulo = pSrc->BytesPerRow - (uwBlitWords<<1);
 	wDstModulo = pDst->BytesPerRow - (uwBlitWords<<1);
 	WaitBlit();
-	custom.bltcon0 = uwBltCon0;
-	custom.bltcon1 = uwBltCon1;
-	custom.bltafwm = uwFirstMask;
-	custom.bltalwm = uwLastMask;
+	g_pCustom->bltcon0 = uwBltCon0;
+	g_pCustom->bltcon1 = uwBltCon1;
+	g_pCustom->bltafwm = uwFirstMask;
+	g_pCustom->bltalwm = uwLastMask;
 
-	custom.bltamod = wDstModulo;
-	custom.bltbmod = wSrcModulo;
-	custom.bltdmod = wDstModulo;
+	g_pCustom->bltamod = wDstModulo;
+	g_pCustom->bltbmod = wSrcModulo;
+	g_pCustom->bltdmod = wDstModulo;
 	for(ubPlane = pSrc->Depth; ubPlane--;) {
 		WaitBlit();
-		custom.bltapt  = (UBYTE*)((ULONG)pMsk + ulDstOffs);
-		custom.bltbpt  = (UBYTE*)(((ULONG)(pSrc->Planes[ubPlane])) + ulSrcOffs);
-		custom.bltdpt  = (UBYTE*)(((ULONG)(pDst->Planes[ubPlane])) + ulDstOffs);
+		g_pCustom->bltapt  = (UBYTE*)((ULONG)pMsk + ulDstOffs);
+		g_pCustom->bltbpt  = (UBYTE*)(((ULONG)(pSrc->Planes[ubPlane])) + ulSrcOffs);
+		g_pCustom->bltdpt  = (UBYTE*)(((ULONG)(pDst->Planes[ubPlane])) + ulDstOffs);
 
-		custom.bltsize = (wHeight << 6) | uwBlitWords;
+		g_pCustom->bltsize = (wHeight << 6) | uwBlitWords;
 	}
 }
 
@@ -219,14 +221,14 @@ void waitForPos(UWORD uwPos) {
 
 	// Determine VPort end position
 	uwEndPos = g_pVPort->uwOffsY + uwPos + 0x2C; // Addition from DiWStrt
-	if(vhPosRegs->uwPosY < uwEndPos) {
+	if(vhPosRegs->bfPosY < uwEndPos) {
 		// If current beam is before pos, wait for pos @ current frame
-		while(vhPosRegs->uwPosY < uwEndPos);
+		while(vhPosRegs->bfPosY < uwEndPos);
 	}
 	else {
 		uwCurrFrame = g_sTimerManager.uwFrameCounter;
 		while(
-			vhPosRegs->uwPosY < uwEndPos ||
+			vhPosRegs->bfPosY < uwEndPos ||
 			g_sTimerManager.uwFrameCounter == uwCurrFrame
 		);
 	}

@@ -88,7 +88,7 @@ void undrawDestinationPoint(UWORD uwX, UWORD uwY) {
 void drawCrossAtlasIndex(UWORD uwX, UWORD uwY, UBYTE ubAtlasIndex) {
 	blitCopyMask(
 		g_pCrossBitMapAtlas[ubAtlasIndex], 0, 0,
-		g_pBufferManager->pBuffer, uwX, uwY,
+		g_pBufferManager->pFront, uwX, uwY,
 		CROSS_WIDTH, CROSS_HEIGHT,
 		g_pCrossBitMapMaskAtlas[ubAtlasIndex]->pData
 	);
